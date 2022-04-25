@@ -84,7 +84,6 @@ body{
 }
 .grafico{
     border: 3px solid black;
-    background-color: rgba(0, 0, 0, 0.25);
     height: 220px;
     width: 360px;
     display: flex;

@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>CacauFresh | Dashboard</title>
 </head>
+
 <body>
     <!-- Header -->
     <div class="header-left">
@@ -20,13 +23,95 @@
             <div id="condicao_perigo" class="div_condicao">Perigo:<br>X</div>
         </div>
         <div class="card">
-            <h>Sensor 1</h>
+            <h4>Sensor 1</h4>
             <div class="graficos">
-            <div id="graficoCalor" class="grafico">Aqui vem o gráfico de temperatura</div>
-            <div id="graficoUmidade" class="grafico">Aqui vem o gráfico de umidade</div>
-        </div>
+                <div id="graficoCalor" class="grafico">
+                    <canvas id="myChart"></canvas>
+                </div>
+                <div id="graficoUmidade" class="grafico">
+                    <canvas id="myChart2"></canvas>
+                </div>
+            </div>
         </div>
     </div>
 
 </body>
+
 </html>
+
+
+<script>
+
+    function graf_temp() {
+
+        const labels = [
+            '12:00',
+            '12:30',
+            '13:00',
+            '13:30',
+            '14:00',
+            '14:30',
+        ];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Temperatura',
+                backgroundColor: 'black',
+                borderColor: 'aqua',
+                data: [23, 24, 27, 30, 22, 21, 25],
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
+
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+
+    }
+
+
+    function graf_umi() {
+
+        const labels = [
+            '12:00',
+            '12:30',
+            '13:00',
+            '13:30',
+            '14:00',
+            '14:30',
+        ];
+
+        const data = {
+            labels: labels,
+            datasets: [{
+                label: 'Umidade',
+                backgroundColor: 'white',
+                borderColor: 'black',
+                data: [55, 47, 33, 57, 56, 40, 30],
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {}
+        };
+
+        const myChart = new Chart(
+            document.getElementById('myChart2'),
+            config
+        );
+
+    }
+
+    setInterval(function () {
+        graf_temp(), graf_umi(), 3000
+    })
+</script>
