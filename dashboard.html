@@ -13,41 +13,53 @@
 
 <body>
     <!-- Header -->
+    <div class="header-top">
+        <span class="texto_ola"> Olá, (usuário) </span>
+    </div>
     <div class="header-left">
-        <img onclick="tela_inicial()" src="img/arrow.png">
-        <img class="icon_temp" src="img/termometro.png">
-        <span>Temperaturas</span>
-        <img class="icon_umi" src="img/umidade.png">
-        <span>Umidade</span>
-        <img class="icon_log" src="img/logout.png"> <br>
-        <span>Sair</span>
+        <ul class="lista_lateral">
+            <li>
+                <a href="#" class="link"> Home </a>
+            </li>
+            <br>
+            <li>
+                <a href="#" class="link"> Setores </a>
+            </li>
+            <br>
+            <li>
+                <a href="#" class="link"> Alertas </a>
+            </li>
+            <br>
+            <li>
+                <a href="#" class="link"> Fale conosco </a>
+            </li>
+        </ul>
+        <a href="#" class="botao_sair link">Sair</a>
     </div>
     <div class="container">
-        <div class="alerts">
-            <div id="total_sensores" class="div_condicao">Total de sensores:<br>X</div>
-            <div id="condicao_OK" class="div_condicao">Ok:<br>X</div>
-            <div id="condicao_alerta" class="div_condicao">Alerta:<br>X</div>
-            <div id="condicao_perigo" class="div_condicao">Perigo:<br>X</div>
-        </div>
-        <div class="card">
-            <span id="span_setor">Escolha o setor:</span>
-            <select id="select_setor" onchange="set_graf()">
-                <option value="-">Escolha:</option>
-                <option value="set_1">Setor 1</option>
-                <option value="set_2">Setor 2</option>
-                <option value="set_3">Setor 3</option>
-            </select>
-            <div class="graficos">
-                <div id="graficoCalor" class="grafico">
-                    <canvas id="myChart"></canvas>
-                </div>
-                <div id="graficoUmidade" class="grafico">
-                    <canvas id="myChart2"></canvas>
+        <div class="grafs1">
+            <div class="card">
+                <div class="graficos">
+                    <div id="graficoCalor" class="grafico">
+                        <canvas id="myChart" class="canvas"></canvas>
+                    </div>
+                    <div id="graficoUmidade" class="grafico">
+                        <canvas id="myChart2" class="canvas"></canvas>
+                    </div>
                 </div>
             </div>
+            <div class="organizar_graf">
+                <div id="grafico1" class="canvas"></div>
+                <div id="grafico2" class="canvas"></div>
+            </div>
+        </div>
+        <div class="grafs_laterais">
+            <div id="average_charts" class="classe_texto"></div>
+            <div id="div_news" class="classe_texto"></div>
         </div>
     </div>
 
 </body>
+
 
 </html>
