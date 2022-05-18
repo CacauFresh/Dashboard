@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dash-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/dash-main.js"></script>
+    <script src="main.js"></script>
+    <title>CacauFresh | Dashboard</title>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header-top">
+        <span class="texto_ola"> Olá, (usuário) </span>
+    </div>
+    <div class="header-left">
+        <ul class="lista_lateral">
+            <li>
+                <a href="#" class="link"> Home </a>
+            </li>
+            <br>
+            <li>
+                <a href="#" class="link"> Setores </a>
+            </li>
+            <br>
+            <li>
+                <a href="#" class="link"> Alertas </a>
+            </li>
+            <br>
+            <li>
+                <a href="#" class="link"> Fale conosco </a>
+            </li>
+        </ul>
+        <a href="#" class="botao_sair link">Sair</a>
+    </div>
+    <div class="container">
+        <div class="grafs1">
+            <div class="card">
+                <div class="graficos">
+                    <div id="graficoCalor" class="grafico">
+                        <canvas id="myChart" class="canvas"></canvas>
+                    </div>
+                    <div id="graficoUmidade" class="grafico">
+                        <canvas id="myChart2" class="canvas"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="organizar_graf">
+                <div id="grafico1" class="canvas">
+                    <canvas id="myChart3" class="canvas1"></canvas>
+                </div>
+                <div id="grafico2" class="canvas">
+                    <canvas id="myChart4" class="canvas1"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="grafs_laterais">
+            <div id="average_charts" class="classe_texto"></div>
+            <div id="div_news" class="classe_texto"></div>
+        </div>
+    </div>
+
+</body>
+
+
+</html>
+
+<script>
+    /* -- dht11Umidade -- */
+    var contextoDht11Umidade = document.getElementById('myChart3').getContext('2d');
+    contextoDht11Umidade.canvas.width = 1000;
+    contextoDht11Umidade.canvas.height = 300;
+    var dht11Umidade = new Chart(
+        contextoDht11Umidade,
+        {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Umidade',
+                    type: 'line',
+                    borderColor: ['#45b3e7'],
+                    backgroundColor: ['#89cff0']
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        distribution: 'series',
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Umidade'
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    duration: 0
+                }
+            }
+        }
+    );
+    /* -- dht11Temperatura -- */
+    var contextoDht11Temperatura = document.getElementById('myChart4').getContext('2d');
+    contextoDht11Temperatura.canvas.width = 1000;
+    contextoDht11Temperatura.canvas.height = 300;
+    var dht11Temperatura = new Chart(
+        contextoDht11Temperatura,
+        {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: "Temperatura",
+                    type: 'line',
+                    borderColor: ['#ff3232'],
+                    backgroundColor: ['#ff7f7f']
+                }]
+            },
+            options: {
+                scales: {
+                    xAxes: [{
+                        distribution: 'series',
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }],
+                    yAxes: [{
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Temperatura'
+                        },
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                },
+                animation: {
+                    duration: 0
+                }
+            }
+        }
+    );
+
+    var paginacao = {};
+    var tempo = {};
+    function obterDados(grafico, endpoint) {
+        var http = new XMLHttpRequest();
+        http.open('GET', 'http://localhost:3000/sensores/' + endpoint, false);
+        http.send(null);
+        var valores = JSON.parse(http.responseText);
+        if (paginacao[endpoint] == null) {
+            paginacao[endpoint] = 0;
+        }
+        if (tempo[endpoint] == null) {
+            tempo[endpoint] = 0;
+        }
+        // Exibir à partir do último elemento exibido anteriormente
+        var ultimaPaginacao = paginacao[endpoint];
+        paginacao[endpoint] = valores.length;
+        var valores = valores.slice(ultimaPaginacao);
+        valores.forEach((valor) => {
+            //Máximo de 60 itens exibidos no gráfico
+            if (grafico.data.labels.length == 10 && grafico.data.datasets[0].data.length == 10) {
+                grafico.data.labels.shift();
+                grafico.data.datasets[0].data.shift();
+            }
+
+            grafico.data.labels.push(tempo[endpoint]++);
+            grafico.data.datasets[0].data.push(parseFloat(valor));
+            grafico.update();
+        })
+    }
+
+    setInterval(() => {
+        obterDados(myChart3, 'dht11/umidade');
+        obterDados(myChart4, 'dht11/temperatura');
+    }, 1000);
+
+</script>

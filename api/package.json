@@ -1,0 +1,16 @@
+{
+  "name": "cacau_fresh_api",
+  "version": "2.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": "Cacau Fresh devs",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mysql2": "^2.3.3",
+    "serialport": "^10.4.0"
+  }
+}
